@@ -5,7 +5,21 @@
   <div class="d-flex flex-column align-items-center">
     <h1 class="fs-3 fw-bold my-3">{{ user.username }}'s Tasks</h1>
     <div class="w-100" style="max-width: 40rem;">
-      <ul class="list-group shadow">
+      <!-- add new task form --->
+      <div class="mb-4">
+        <form
+          hx-post="{% url 'todos:create' %}"
+          hx-swap="beforeend"
+          hx-target="#todo-items"
+          hx-on::after-request="this.reset()"
+          class="d-flex align-items-center gap-2"
+        >
+          {{ add_todo_form.title }}
+          <button type="submit" class="btn btn-primary text-white px-4">Add</button>
+        </form>
+      </div>
+      <!-- end add new task form --->
+      <ul id="todo-items" class="list-group shadow">
         {% for todo in todos %}
           {% partialdef todo-item-partial inline %}
             <li class="list-group-item d-flex align-items-center">
