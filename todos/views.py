@@ -4,9 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
-from django.views.generic import ListView, CreateView, DeleteView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 
-from todos.forms import AddTodoForm
+from todos.forms import AddTodoForm, UpdateTodoForm
 from todos.models import Todo
 
 
@@ -54,6 +54,9 @@ class CreateTodoView(LoginRequiredMixin, CreateView):
 class DeleteTodoView(LoginRequiredMixin, DeleteView):
     model = Todo
 
+    def get_queryset(self):
+        return self.request.user.todos.all()
+
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
@@ -62,3 +65,31 @@ class DeleteTodoView(LoginRequiredMixin, DeleteView):
         response['HX-Trigger'] = 'todo-deleted'
 
         return response
+
+
+class UpdateTodoView(LoginRequiredMixin, UpdateView):
+    model = Todo
+    form_class = UpdateTodoForm
+    context_object_name = 'todo'
+    template_name = 'todos/update.html'
+
+    def get_queryset(self):
+        return self.request.user.todos.all()
+
+    def form_valid(self, form):
+        todo = form.save()
+
+        return render(self.request, 'todos/list.html#todo-item-partial', {'todos': [todo]})
+
+
+class TodoDetailView(LoginRequiredMixin, DetailView):
+    model = Todo
+    context_object_name = 'todo'
+
+    def get_queryset(self):
+        return self.request.user.todos.all()
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        return render(self.request, 'todos/list.html#todo-item-partial', {'todos': [self.object]})

@@ -37,6 +37,14 @@
                 </label>
                 <span class="flex-grow-1 fs-5 {% if todo.is_completed %}text-muted{% endif %}">{{ todo.title }}</span>
                 <button
+                  class="btn btn-secondary btn-sm ms-3"
+                  hx-get="{% url 'todos:edit' todo.id %}"
+                  hx-swap="innerHTML"
+                  hx-target="closest li"
+                >
+                  Edit
+                </button>
+                <button
                   class="btn btn-danger btn-sm ms-3"
                   hx-delete="{% url 'todos:delete' todo.id %}"
                   hx-on:todo-deleted="this.closest('li').remove()"
