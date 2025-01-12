@@ -37,6 +37,18 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-dynamic-fixture"
+version = "4.0.1"
+description = "A full library to create dynamic model instances for testing purposes."
+optional = false
+python-versions = "*"
+groups = ["dev"]
+files = [
+    {file = "django-dynamic-fixture-4.0.1.tar.gz", hash = "sha256:2a2197578b7702db8f5eed9ad704f6be33bac8bf0111c7c92f6063c2a4d02933"},
+    {file = "django_dynamic_fixture-4.0.1-py3-none-any.whl", hash = "sha256:d0611b6dc594fb1bccad1fd94dade89cc8deca12385bc2763baded3e48322547"},
+]
+
+[[package]]
 name = "sqlparse"
 version = "0.5.3"
 description = "A non-validating SQL parser."
@@ -68,4 +80,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13"
-content-hash = "aaa18ff256b31dc34114af208fd63570d27d4afb6d5e2b7e2a2377eb43a8a1ad"
+content-hash = "c6d7e5a0ef9fb6faa77cdcb205480d47f8e39e6681154d446fd5a4870c25a4d2"
