@@ -12,10 +12,11 @@
           hx-swap="beforeend"
           hx-target="#todo-items"
           hx-on::after-request="this.reset()"
+          hx-disabled-elt="#submit-button"
           class="d-flex align-items-center gap-2"
         >
           {{ add_todo_form.title }}
-          <button type="submit" class="btn btn-primary text-white px-4">Add</button>
+          <button id="submit-button" type="submit" class="btn btn-primary text-white px-4">Add</button>
         </form>
       </div>
       <!-- end add new task form --->
@@ -28,6 +29,7 @@
                    hx-put="{% url 'todos:toggle-completion' todo.id %}"
                    hx-target="closest li"
                    hx-swap="outerHTML"
+                   hx-on:click="this.setAttribute('disabled', 'disabled')"
                    {% if todo.is_completed %}checked{% endif %}
                    class="form-check-input me-3"
                 />
