@@ -10,7 +10,13 @@
           {% partialdef todo-item-partial inline %}
             <li class="list-group-item d-flex align-items-center">
               <label>
-                <input type="checkbox" {% if todo.is_completed %}checked{% endif %} class="form-check-input me-3" />
+                <input type="checkbox"
+                   hx-put="{% url 'todos:toggle-completion' todo.id %}"
+                   hx-target="closest li"
+                   hx-swap="outerHTML"
+                   {% if todo.is_completed %}checked{% endif %}
+                   class="form-check-input me-3"
+                />
               </label>
               <span class="flex-grow-1 fs-5 {% if todo.is_completed %}text-muted{% endif %}">{{ todo.title }}</span>
             </li>
