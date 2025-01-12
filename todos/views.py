@@ -35,7 +35,7 @@ class ToggleTodoCompletionView(LoginRequiredMixin, View):
         todo: Todo = get_object_or_404(request.user.todos, id=pk)
 
         todo.is_completed = not todo.is_completed
-        todo.save(update_fields=['is_completed', 'updated_at'])
+        todo.save(update_fields=['is_completed'])
 
         return render(request, 'todos/list.html#todo-item-partial', {'todos': [todo]})
 
