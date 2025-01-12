@@ -49,6 +49,25 @@ files = [
 ]
 
 [[package]]
+name = "django-template-partials"
+version = "24.4"
+description = "django-template-partials"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "django_template_partials-24.4-py2.py3-none-any.whl", hash = "sha256:ee59d3839385d7f648907c3fa8d5923fcd66cd8090f141fe2a1c338b917984e2"},
+    {file = "django_template_partials-24.4.tar.gz", hash = "sha256:25b67301470fc274ecc419e5e5fd4686a5020b1c038fd241a70eb087809034b6"},
+]
+
+[package.dependencies]
+Django = "*"
+
+[package.extras]
+docs = ["Sphinx"]
+tests = ["coverage", "django_coverage_plugin"]
+
+[[package]]
 name = "sqlparse"
 version = "0.5.3"
 description = "A non-validating SQL parser."
@@ -80,4 +99,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13"
-content-hash = "c6d7e5a0ef9fb6faa77cdcb205480d47f8e39e6681154d446fd5a4870c25a4d2"
+content-hash = "8e976b1bd6bb22b1c31e2abd0b722064e1052571bfdb67ada60fbb0f060bf8c3"
