@@ -16,7 +16,13 @@ class ListTodosView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return self.request.user.todos.order_by('created_at').all()
+        queryset = self.request.user.todos.order_by('created_at').all()
+
+        query = self.request.GET.get('query', None)
+        if query:
+            queryset = queryset.filter(title__icontains=query)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

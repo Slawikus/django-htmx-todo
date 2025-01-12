@@ -5,6 +5,21 @@
   <div class="d-flex flex-column align-items-center">
     <h1 class="fs-3 fw-bold my-3">{{ user.username }}'s Tasks</h1>
     <div class="w-100" style="max-width: 40rem;">
+      <!-- search input -->
+      <div class="d-flex justify-content-center">
+        <div class="input-group my-4 w-50">
+          <input
+            type="search"
+            name="query"
+            class="form-control"
+            placeholder="Type to search..."
+            hx-get="{% url 'todos:list' %}"
+            hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
+            hx-target="#todo-items"
+          />
+        </div>
+      </div>
+      <!-- end search input -->
       <!-- add new task form --->
       <div class="mb-4">
         <form
@@ -54,15 +69,16 @@
               </li>
           {% endfor %}
           {% if page_obj.has_next %}
-            <p
-              id="loading"
-              hx-get="{% url 'todos:list' %}?page={{ page_obj.next_page_number }}"
-              hx-trigger="revealed"
-              hx-swap="outerHTML"
-              class="mx-auto my-4 d-flex justify-content-center align-items-center"
-            >
-              loading next page...
-            </p>
+            {% with request.GET.query as query %}
+              <p
+                class="mx-auto my-4 d-flex justify-content-center align-items-center"
+                hx-get="{% url 'todos:list' %}?page={{ page_obj.next_page_number }}{% if query %}&query={{ query }}{% endif %}"
+                hx-trigger="revealed"
+                hx-swap="outerHTML"
+              >
+                loading next page...
+              </p>
+            {% endwith %}
           {% endif %}
         {% endpartialdef %}
       </ul>

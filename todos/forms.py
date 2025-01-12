@@ -11,6 +11,7 @@ class AddTodoForm(forms.ModelForm):
             'title': forms.TextInput(attrs={
                 'class': 'form-control flex-grow-1 fs-5',
                 'placeholder': 'Add a new todo',
+                'autofocus': 'autofocus',
             }),
         }
 
