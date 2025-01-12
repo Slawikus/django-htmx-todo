@@ -12,8 +12,8 @@ from todos.models import Todo
 
 class ListTodosView(LoginRequiredMixin, ListView):
     model = Todo
-    template_name = 'todos/list.html'
     context_object_name = 'todos'
+    paginate_by = 10
 
     def get_queryset(self):
         return self.request.user.todos.order_by('created_at').all()
@@ -23,6 +23,9 @@ class ListTodosView(LoginRequiredMixin, ListView):
         context['add_todo_form'] = CreateTodoView().get_form_class()
 
         return context
+
+    def get_template_names(self):
+        return ['todos/list.html#todo-item-partial'] if "HX-Request" in self.request.headers else ['todos/list.html']
 
 
 class ToggleTodoCompletionView(LoginRequiredMixin, View):
@@ -34,7 +37,7 @@ class ToggleTodoCompletionView(LoginRequiredMixin, View):
         todo.is_completed = not todo.is_completed
         todo.save(update_fields=['is_completed', 'updated_at'])
 
-        return render(request, 'todos/list.html#todo-item-partial', {'todo': todo})
+        return render(request, 'todos/list.html#todo-item-partial', {'todos': [todo]})
 
 
 class CreateTodoView(LoginRequiredMixin, CreateView):
@@ -45,7 +48,7 @@ class CreateTodoView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         todo = form.save()
 
-        return render(self.request, 'todos/list.html#todo-item-partial', {'todo': todo})
+        return render(self.request, 'todos/list.html#todo-item-partial', {'todos': [todo]})
 
 
 class DeleteTodoView(LoginRequiredMixin, DeleteView):
@@ -59,5 +62,3 @@ class DeleteTodoView(LoginRequiredMixin, DeleteView):
         response['HX-Trigger'] = 'todo-deleted'
 
         return response
-
-
