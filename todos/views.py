@@ -1,7 +1,10 @@
+from http import HTTPStatus
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DeleteView
 
 from todos.forms import AddTodoForm
 from todos.models import Todo
@@ -25,8 +28,8 @@ class ListTodosView(LoginRequiredMixin, ListView):
 class ToggleTodoCompletionView(LoginRequiredMixin, View):
     http_method_names = ['put']
 
-    def put(self, request, id, *args, **kwargs):
-        todo: Todo = get_object_or_404(request.user.todos, id=id)
+    def put(self, request, pk, *args, **kwargs):
+        todo: Todo = get_object_or_404(request.user.todos, id=pk)
 
         todo.is_completed = not todo.is_completed
         todo.save(update_fields=['is_completed', 'updated_at'])
@@ -43,3 +46,18 @@ class CreateTodoView(LoginRequiredMixin, CreateView):
         todo = form.save()
 
         return render(self.request, 'todos/list.html#todo-item-partial', {'todo': todo})
+
+
+class DeleteTodoView(LoginRequiredMixin, DeleteView):
+    model = Todo
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+
+        response = HttpResponse(status=HTTPStatus.NO_CONTENT)
+        response['HX-Trigger'] = 'todo-deleted'
+
+        return response
+
+
